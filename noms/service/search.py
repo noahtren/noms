@@ -17,9 +17,9 @@ def print_results(search_obj, max_entries=None):
         search_obj["items"] = search_obj["items"][:max_entries]
     search_obj["items"].sort(key=operator.itemgetter("group"))
     for item in search_obj["items"]:
-        if len(item["name"]) > 68:
-            item["name"] = item["name"][:68] + ".."
-        if len(item["group"]) > 23:
-            item["group"] = item["group"][:23] + ".."
-        print("{name:<70} {group:^25} {id:>15}".format(name=item["name"],group=item["group"],id=item["ndbno"]))
+        if len(item["name"]) > 70:
+            item["name"] = item["name"][:70] + ".."
+        if len(item["group"]) > 28:
+            item["group"] = item["group"][:28] + ".."
+        print("{name:<72} {group:^30} {id:>8}".format(name=item["name"],group=item["group"],id=item["ndbno"]))
     print("="*112)
