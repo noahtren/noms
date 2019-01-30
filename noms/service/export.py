@@ -1,8 +1,10 @@
 import csv
+import os
 from ..objects.nutrient_dict import *
 
 def export_report(meal):
-    csvfile = open("report.csv", "w",newline='')
+    path = os.path.dirname(__file__) + '/../../reports/report.csv'
+    csvfile = open(path, "w",newline='')
     writer = csv.writer(csvfile, delimiter=',')
     # Write profile information
     writer.writerow(['TDEE',None,tdee])
