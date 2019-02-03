@@ -7,3 +7,7 @@ from noms.service.food import foods, meal
 from noms.service.export import export_report
 
 print_results(get_results("Raw Broccoli", client))
+print_results(get_results("Cola", client))
+food_list = foods({'11090':100, '14400':100}, client)
+my_meal = meal(food_list)
+export_report(my_meal)
