@@ -16,6 +16,7 @@ def print_results(search_obj, max_entries=None):
     if max_entries < len(search_obj["items"]):
         search_obj["items"] = search_obj["items"][:max_entries]
     search_obj["items"].sort(key=operator.itemgetter("group"))
+    print("{name:<72} {group:^30} {id:>8}".format(name="Name",group="Group",id="ID"))
     for item in search_obj["items"]:
         if len(item["name"]) > 70:
             item["name"] = item["name"][:70] + ".."
