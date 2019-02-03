@@ -1,17 +1,22 @@
 import copy
 
 class Food:
-    def __init__(self, _dict):
-        self.desc = _dict["food"]["desc"]
-        self.nutrients = _dict["food"]["nutrients"]
-    def __add__(self, other):
-        assert len(self.nutrients) == len(other.nutrients)
-        return_copy = copy.deepcopy(self)
-        self_tracked = [i["nutrient_id"] for i in self.nutrients]
-        other_tracked = [i["nutrient_id"] for i in other.nutrients]
-        tracked_nutrients = list(set(self_tracked)|set(other_tracked))
-        i = 0
-        for id in tracked_nutrients:
-            return_copy.nutrients[i]["value"] = round(other.nutrients[i]["value"]+return_copy.nutrients[i]["value"],2)
-            i += 1
-        return return_copy
+    def __init__(self, data):
+        self.desc = data["food"]["desc"]
+        self.nutrients = data["food"]["nutrients"]
+
+class Meal:
+    def __init__(self, foods):
+        self.foods = foods
+        self.nutrients = []
+        for nutrient in foods[0].nutrients:
+            to_app = nutrient.copy()
+            to_app["value"] = 0
+            self.nutrients.append(to_app)
+        for food in foods:
+            n = 0
+            for nutrient in food.nutrients:
+                self.nutrients[n]["value"] += nutrient["value"]
+                n += 1
+        for n in range(0, len(self.nutrients)):
+            self.nutrients[n]["value"] = round(self.nutrients[n]["value"], 2)
