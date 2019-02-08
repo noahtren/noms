@@ -1,5 +1,5 @@
-from ..client.main import Client
-from ..client.dict_parse import search_parse
+from .client.main import Client
+from .client.dict_parse import search_parse
 import operator
 
 def get_results(query, client):

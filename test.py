@@ -2,9 +2,9 @@ from noms.client.main import Client
 key = open("key.txt","r").read()
 client = Client(key)
 
-from noms.service.search import get_results, print_results
-from noms.service.food import foods, meal
-from noms.service.report import export_report, report
+from noms.search import get_results, print_results
+from noms.food import foods, meal
+from noms.report import export_report, report
 
 print_results(get_results("Raw Broccoli", client))
 print_results(get_results("Cola", client))

@@ -1,7 +1,7 @@
-from ..client.main import Client
-from ..client.dict_parse import food_parse
-from ..objects.nutrient_dict import nutrient_dict
-from ..objects.food import Meal
+from .client.main import Client
+from .client.dict_parse import food_parse
+from .objects.nutrient_dict import nutrient_dict
+from .objects.food import Meal
 
 def foods(id_value_dict, client):
     food_obj = client.food_query(id_value_dict.keys())

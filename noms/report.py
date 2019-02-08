@@ -1,6 +1,6 @@
 import csv
 import sys
-from ..objects.nutrient_dict import *
+from .objects.nutrient_dict import *
 
 def report(meal):
     report = []
