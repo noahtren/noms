@@ -4,10 +4,13 @@ client = Client(key)
 
 from noms.service.search import get_results, print_results
 from noms.service.food import foods, meal
-from noms.service.export import export_report
+from noms.service.report import export_report, report
 
 print_results(get_results("Raw Broccoli", client))
 print_results(get_results("Cola", client))
+
 food_list = foods({'11090':100, '14400':100}, client)
-my_meal = meal(food_list)
-export_report(my_meal)
+m = meal(food_list)
+r = report(m)
+for i in r:
+    print(i)
