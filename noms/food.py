@@ -8,6 +8,3 @@ def foods(id_value_dict, client):
     # Return list of food objects in context of nutrients being tracked
     food_obj = food_parse(food_obj, nutrient_dict, list(id_value_dict.values()))
     return food_obj
-
-def meal(foods):
-    return Meal(foods)
