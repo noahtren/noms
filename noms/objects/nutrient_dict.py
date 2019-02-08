@@ -2,6 +2,18 @@ import json
 import os
 import codecs
 
+def index_from_name(name):
+    i = 0; found = False
+    for nutrient in nutrient_dict:
+        if nutrient["name"] == name:
+            return i
+        if "nickname" in nutrient.keys():
+            if nutrient["nickname"] == name:
+                return i
+        i += 1
+    # if not found, return -1
+    return -1
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 nutrient_file = codecs.open("{}/nutrient_ids.json".format(dir_path), encoding="utf-8").read()
 nutrient_dict = json.loads(nutrient_file)

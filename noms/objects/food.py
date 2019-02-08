@@ -1,4 +1,6 @@
 import copy
+import operator
+from .nutrient_dict import nutrient_dict, index_from_name
 
 class Food:
     def __init__(self, data):
@@ -20,3 +22,7 @@ class Meal:
                 n += 1
         for n in range(0, len(self.nutrients)):
             self.nutrients[n]["value"] = round(self.nutrients[n]["value"], 2)
+    def sort_by_top(self, n):
+        ni = index_from_name(n)
+        self.foods.sort(key=lambda f: f.nutrients[ni]["value"], reverse=True)
+        
