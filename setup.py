@@ -5,18 +5,24 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="noms",
-    version="0.0.1",
+    version="0.0.3",
     author="Noah Trenaman",
     author_email="hello@noahtrenaman.com",
-    description="Nutrient Object Management System (noms) using the USDA's FoodData Central",
+    description="Nutrient Object Management System (noms) using the USDA's Standard Reference Database",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/noahtren/noms",
     packages=setuptools.find_packages(),
     include_package_data=True,
+    install_requires=[
+          'copy',
+          'operator',
+          'requests',
+          'json'
+      ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
 )
