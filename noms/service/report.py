@@ -1,5 +1,4 @@
 import csv
-import os
 import sys
 from ..objects.nutrient_dict import *
 
@@ -26,8 +25,7 @@ def report(meal):
         report.append({"name":name, "rda":rda, "limit":limit, "value":value, "state":state})
     return report
 
-def export_report(meal):
-    path = os.path.dirname(__file__) + '/../../reports/report.csv'
+def export_report(meal, path):
     csvfile = open(path, "w",newline='')
     writer = csv.writer(csvfile, delimiter=',')
     # Write profile information
