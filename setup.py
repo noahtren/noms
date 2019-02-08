@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="noms",
-    version="0.1.1",
+    version="0.1.2",
     author="Noah Trenaman",
     author_email="hello@noahtrenaman.com",
     description="A fun and simple Python package that allows you to work with highly detailed nutrition data",
