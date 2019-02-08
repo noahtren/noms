@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="noms",
-    version="0.0.5",
+    version="0.1.0",
     author="Noah Trenaman",
     author_email="hello@noahtrenaman.com",
     description="Nutrient Object Management System (noms) using the USDA's Standard Reference Database",
