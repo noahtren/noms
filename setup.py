@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="noms",
-    version="0.1.0",
+    version="0.1.1",
     author="Noah Trenaman",
     author_email="hello@noahtrenaman.com",
-    description="Nutrient Object Management System (noms) using the USDA's Standard Reference Database",
+    description="A fun and simple Python package that allows you to work with highly detailed nutrition data",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/noahtren/noms",
