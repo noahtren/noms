@@ -11,7 +11,10 @@ This amounts to 41 nutrients being tracked, but many more are available from the
 Note: The Standard Reference Database is used explicitly without the addition of the USDA's Branded Foods database, as only the former allows for highly detailed reports which track 168 different nutrients -- much more information than you would find on an item's nutrition facts! This is especially valuable for nutritionists or people interested in their own health to explore the nutritional content of whole foods. 
 
 ## Installation
-noms is not yet on PyPI so it cannot be installed through pip. For now, you can download or clone this repository and imitate the structure of test.py.
+The noms package is listed on PyPI and can be installed with pip. Simply do:
+```
+pip install noms
+```
 
 ## Getting Started
 1. Get a data.gov API key for free from here: https://api.data.gov/signup/
