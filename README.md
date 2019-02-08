@@ -47,13 +47,13 @@ Broccoli, chinese, raw                                                   Vegetab
 Broccoli, flower clusters, raw                                           Vegetables and Vegetable Pro..    11740
 ================================================================================================================
 ```
-## Requesting food data from the database 
+## Requesting Food Data From the Database 
 In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage (14400). The numbers afterwards represent the mass of that food, in grams. More mass for a given food equals a greater amount of each nutrient in equal proportion (twice the broccoli has twice the vitamins).
 ```python
 food_list = foods({'11090':100, '14400':100}, client)
 m = meal(food_list)
 ```
-## Generating and displaying a report 
+## Generating and Displaying a Report 
 The report is a Python dictionary with attributes based on the meal object and the nutrient_dict object from noms.objects.nutrient_dict. This is where the RDAs and limits for each nutrient are recorded.
 ```python
 r = report(m)
@@ -86,6 +86,20 @@ for i in r:
 {'name': 'Vitamin D', 'rda': 1000, 'limit': 8000, 'value': 0.0, 'state': 'deficient'}
 ... continued
 ```
+## Sorting Foods in a Meal By a Specific Nutrient
+Sometimes it is helpful to see which foods contain the most of a given nutrient in a meal. For example, you may want to see which foods result in having the most sugar for a given day. This can be achieved through the following code:
+```python
+from noms.objects.nutrient_dict import index_from_name
+# index_from_name returns the index that nutrient information exists in an array of nutrients
+m.sort_by_top("Sugar")
+ni = index_from_name("Sugar")
+for food in m.foods:
+    print(food.nutrients[ni])
+```
+```
+{'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 8.97}
+{'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 1.7}
+```
+Note that this sorts the foods in the meal object from greatest to least in terms of how much sugar each food has.
 ## To-Do
 1. Allow the foods() method from the noms.service.food module to accept dictionaries of length greater than 25. (It currently maxes out at this value because the API only accepts calls of this size.)
-2. Add a search method to noms.service.search that returns a dictionary instead of printing a report of search results.
