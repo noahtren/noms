@@ -3,8 +3,7 @@ import os
 import codecs
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-os.chdir(dir_path)
-nutrient_file = codecs.open("nutrient_ids.json", encoding="utf-8").read()
+nutrient_file = codecs.open("{}/nutrient_ids.json".format(dir_path), encoding="utf-8").read()
 nutrient_dict = json.loads(nutrient_file)
 
 # PROFILE INFORMATION
