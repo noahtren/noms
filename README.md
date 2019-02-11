@@ -26,7 +26,7 @@ client = Client("api key")
 3. Import the methods that you'd like to use.
 ```python
 from noms.search import get_results, print_results
-from noms.food import foods, meal
+from noms.food import foods
 from noms.report import export_report, report
 ```
 ## Searching the Database
@@ -47,14 +47,20 @@ Broccoli, chinese, raw                                                   Vegetab
 Broccoli, flower clusters, raw                                           Vegetables and Vegetable Pro..    11740
 ================================================================================================================
 ```
-## Requesting Food Data From the Database 
+## Requesting Food Data From the Database
 In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage (14400). The numbers afterwards represent the mass of that food, in grams. More mass for a given food equals a greater amount of each nutrient in equal proportion (twice the broccoli has twice the vitamins).
 ```python
 food_list = foods({'11090':100, '14400':100}, client)
-m = meal(food_list)
 ```
+## Initializing a Meal With a List of Foods
+The foods method returns a list of foods when given a specific query, but if you would like to analyze or sort a group of foods together, they should be merged into a Meal object. This is done by simple constructing a Meal instance with a list of foods. You will also need to import the Meal class.
+```python
+from noms.objects.food import Meal
+m = Meal(food_list)
+```
+
 ## Generating and Displaying a Report 
-The report is a Python dictionary with attributes based on the meal object and the nutrient_dict object from noms.objects.nutrient_dict. This is where the RDAs and limits for each nutrient are recorded.
+The report is a Python dictionary with attributes based on the Meal object and the nutrient_dict object from noms.objects.nutrient_dict. This is where the RDAs and limits for each nutrient are recorded.
 ```python
 r = report(m)
 for i in r:
@@ -101,7 +107,7 @@ for food in m.foods:
 {'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 8.97}
 {'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 1.7}
 ```
-Note that this sorts the foods in the meal object from greatest to least in terms of how much sugar each food has.
+Note that this sorts the foods in the Meal object from greatest to least in terms of how much sugar each food has.
 ## To-Do
 1. Add analytics subpackage to easily explore which foods are most beneficial to meeting certain goals.
 2. Add a scoring system, perhaps as part of the analytics subpackage, which rates a meal in terms of how it meets RDAs or exceeds limits (maybe gradient descent could be used to maximize the score/minimize loss).
