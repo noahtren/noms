@@ -9,6 +9,7 @@ def report(meal):
         rda = nutrient_dict[i]["rda"]
         limit = nutrient_dict[i]["limit"]
         value = meal.nutrients[i]["value"]
+        unit = meal.nutrients[i]["unit"]
         state = ""
         if rda == None:
             rda = 0
@@ -22,7 +23,7 @@ def report(meal):
             state = "satisfactory"
         if limit == sys.maxsize:
             limit = None
-        report.append({"name":name, "rda":rda, "limit":limit, "value":value, "state":state})
+        report.append({"name":name, "rda":rda, "limit":limit, "value":value, "state":state, "unit":unit})
     return report
 
 def export_report(meal, path):
