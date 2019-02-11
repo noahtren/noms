@@ -23,11 +23,11 @@ pip install noms
 from noms.client.main import Client
 client = Client("api key")
 ```
-3. Import the methods that you'd like to use from the services subpackage.
+3. Import the methods that you'd like to use.
 ```python
-from noms.service.search import get_results, print_results
-from noms.service.food import foods, meal
-from noms.service.report import export_report, report
+from noms.search import get_results, print_results
+from noms.food import foods, meal
+from noms.report import export_report, report
 ```
 ## Searching the Database
 ```python
@@ -59,6 +59,7 @@ The report is a Python dictionary with attributes based on the meal object and t
 r = report(m)
 for i in r:
     print(i)
+export_report(m, "report.csv")
 ```
 ```
 {'name': 'Protein', 'rda': 125.0, 'limit': None, 'value': 2.89, 'state': 'deficient'}
