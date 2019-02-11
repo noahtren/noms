@@ -103,4 +103,5 @@ for food in m.foods:
 ```
 Note that this sorts the foods in the meal object from greatest to least in terms of how much sugar each food has.
 ## To-Do
-1. Allow the foods() method from the noms.service.food module to accept dictionaries of length greater than 25. (It currently maxes out at this value because the API only accepts calls of this size.)
+1. Add analytics subpackage to easily explore which foods are most beneficial to meeting certain goals.
+2. Add a scoring system, perhaps as part of the analytics subpackage, which rates a meal in terms of how it meets RDAs or exceeds limits (maybe gradient descent could be used to maximize the score/minimize loss).
