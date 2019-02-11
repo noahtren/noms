@@ -53,48 +53,47 @@ In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage
 food_list = foods({'11090':100, '14400':100}, client)
 ```
 ## Initializing a Meal With a List of Foods
-The foods method returns a list of foods when given a specific query, but if you would like to analyze or sort a group of foods together, they should be merged into a Meal object. This is done by simple constructing a Meal instance with a list of foods. You will also need to import the Meal class.
+The foods() method returned a list of two Food objects when given the arguments above, but if you would like to generate a report, analyze or sort a group of foods, they should be merged into a Meal object. This is done by simply constructing a Meal instance with a list of Food objects. You will also need to import the Meal class.
 ```python
 from noms.objects.food import Meal
 m = Meal(food_list)
 ```
 
 ## Generating and Displaying a Report 
-The report is a Python dictionary with attributes based on the Meal object and the nutrient_dict object from noms.objects.nutrient_dict. This is where the RDAs and limits for each nutrient are recorded.
+The report is a dictionary which shows if RDAs (or Adequate Intakes) are being met or exceeded. These values are assigned by default in noms.objects.nutrient_dict, but support will be added to modify these settings in the future.
 ```python
 r = report(m)
 for i in r:
     print(i)
-export_report(m, "report.csv")
 ```
 ```
-{'name': 'Protein', 'rda': 125.0, 'limit': None, 'value': 2.89, 'state': 'deficient'}
-{'name': 'Fat', 'rda': 55.56, 'limit': None, 'value': 0.39, 'state': 'deficient'}
-{'name': 'Carbs', 'rda': 250.0, 'limit': None, 'value': 16.2, 'state': 'deficient'}
-{'name': 'Calories', 'rda': 2000, 'limit': None, 'value': 71.0, 'state': 'deficient'}
-{'name': 'Water', 'rda': 2000, 'limit': None, 'value': 179.61, 'state': 'deficient'}
-{'name': 'Caffeine', 'rda': 0, 'limit': 400, 'value': 8.0, 'state': 'satisfactory'}
-{'name': 'Theobromine', 'rda': 0, 'limit': 300, 'value': 0.0, 'state': 'satisfactory'}
-{'name': 'Sugar', 'rda': 0, 'limit': 50.0, 'value': 10.67, 'state': 'satisfactory'}
-{'name': 'Fiber', 'rda': 28.0, 'limit': None, 'value': 2.6, 'state': 'deficient'}
-{'name': 'Calcium', 'rda': 1000, 'limit': 2500, 'value': 49.0, 'state': 'deficient'}
-{'name': 'Iron', 'rda': 8, 'limit': 45, 'value': 0.84, 'state': 'deficient'}
-{'name': 'Magnesium', 'rda': 300, 'limit': 700, 'value': 21.0, 'state': 'deficient'}
-{'name': 'Phosphorus', 'rda': 700, 'limit': 4000, 'value': 76.0, 'state': 'deficient'}
-{'name': 'Potassium', 'rda': 1400, 'limit': 6000, 'value': 318.0, 'state': 'deficient'}
-{'name': 'Sodium', 'rda': 1000, 'limit': 2300, 'value': 37.0, 'state': 'deficient'}
-{'name': 'Zinc', 'rda': 12, 'limit': 100, 'value': 0.43, 'state': 'deficient'}
-{'name': 'Copper', 'rda': 0.9, 'limit': 10, 'value': 0.05, 'state': 'deficient'}
-{'name': 'Fluoride', 'rda': 400, 'limit': 10000, 'value': 57.0, 'state': 'deficient'}
-{'name': 'Manganese', 'rda': 1.8, 'limit': None, 'value': 0.21, 'state': 'deficient'}
-{'name': 'Selenium', 'rda': 70, 'limit': 400, 'value': 2.6, 'state': 'deficient'}
-{'name': 'Vitamin A', 'rda': 900, 'limit': 20000, 'value': 623.0, 'state': 'deficient'}
-{'name': 'Vitamin E', 'rda': 15, 'limit': 1000, 'value': 0.78, 'state': 'deficient'}
-{'name': 'Vitamin D', 'rda': 1000, 'limit': 8000, 'value': 0.0, 'state': 'deficient'}
+{'name': 'Protein', 'rda': 125.0, 'limit': None, 'value': 2.89, 'state': 'deficient', 'unit': 'g'}
+{'name': 'Fat', 'rda': 55.56, 'limit': None, 'value': 0.39, 'state': 'deficient', 'unit': 'g'}
+{'name': 'Carbs', 'rda': 250.0, 'limit': None, 'value': 16.2, 'state': 'deficient', 'unit': 'g'}
+{'name': 'Calories', 'rda': 2000, 'limit': None, 'value': 71.0, 'state': 'deficient', 'unit': 'kcal'}
+{'name': 'Water', 'rda': 2000, 'limit': None, 'value': 179.61, 'state': 'deficient', 'unit': 'g'}
+{'name': 'Caffeine', 'rda': 0, 'limit': 400, 'value': 8.0, 'state': 'satisfactory', 'unit': 'mg'}
+{'name': 'Theobromine', 'rda': 0, 'limit': 300, 'value': 0.0, 'state': 'satisfactory', 'unit': 'mg'}
+{'name': 'Sugar', 'rda': 0, 'limit': 50.0, 'value': 10.67, 'state': 'satisfactory', 'unit': 'g'}
+{'name': 'Fiber', 'rda': 28.0, 'limit': None, 'value': 2.6, 'state': 'deficient', 'unit': 'g'}
+{'name': 'Calcium', 'rda': 1000, 'limit': 2500, 'value': 49.0, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Iron', 'rda': 8, 'limit': 45, 'value': 0.84, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Magnesium', 'rda': 300, 'limit': 700, 'value': 21.0, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Phosphorus', 'rda': 700, 'limit': 4000, 'value': 76.0, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Potassium', 'rda': 1400, 'limit': 6000, 'value': 318.0, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Sodium', 'rda': 1000, 'limit': 2300, 'value': 37.0, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Zinc', 'rda': 12, 'limit': 100, 'value': 0.43, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Copper', 'rda': 0.9, 'limit': 10, 'value': 0.05, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Fluoride', 'rda': 400, 'limit': 10000, 'value': 57.0, 'state': 'deficient', 'unit': 'µg'}
+{'name': 'Manganese', 'rda': 1.8, 'limit': None, 'value': 0.21, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Selenium', 'rda': 70, 'limit': 400, 'value': 2.6, 'state': 'deficient', 'unit': 'µg'}
+{'name': 'Vitamin A', 'rda': 900, 'limit': 20000, 'value': 623.0, 'state': 'deficient', 'unit': 'IU'}
+{'name': 'Vitamin E', 'rda': 15, 'limit': 1000, 'value': 0.78, 'state': 'deficient', 'unit': 'mg'}
+{'name': 'Vitamin D', 'rda': 1000, 'limit': 8000, 'value': 0.0, 'state': 'deficient', 'unit': 'IU'}
 ... continued
 ```
 ## Sorting Foods in a Meal By a Specific Nutrient
-Sometimes it is helpful to see which foods contain the most of a given nutrient in a meal. For example, you may want to see which foods result in having the most sugar for a given day. This can be achieved through the following code:
+Sometimes it is helpful to see which foods contain the most of a given nutrient in a meal. For example, you may want to see which foods contributed the most sugar for a given day. This can be achieved through the following code:
 ```python
 from noms.objects.nutrient_dict import index_from_name
 # index_from_name returns the index that nutrient information exists in an array of nutrients
