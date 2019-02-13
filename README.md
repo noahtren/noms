@@ -15,6 +15,10 @@ The noms package is listed on PyPI and can be installed with pip. Simply do:
 ```
 pip install noms
 ```
+If you already have it installed and want to upgrade to the most recent version, do:
+```
+pip install noms --upgrade
+```
 
 ## Getting Started
 1. Get a data.gov API key for free from here: https://api.data.gov/signup/
