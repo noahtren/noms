@@ -42,7 +42,7 @@ class Client:
         return_obj = self.call(params, '/V2/reports')
         offset = 0
         for i in range(0, len(return_obj["foods"])):
-            if 'error' in return_obj["foods"][i].keys():
+            if 'error' in return_obj["foods"][i-offset].keys():
                 del return_obj["foods"][i-offset]
                 offset += 1
         return return_obj
