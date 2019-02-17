@@ -2,6 +2,8 @@ import operator
 from ..objects.food import Food
 
 def search_parse(search_results):
+    if 'errors' in search_results.keys():
+        return None
     # Store the search term that was used to produce these results
     search_term = search_results["list"]["q"]
     # Store a list of dictionary items for each result of the search
@@ -16,6 +18,8 @@ def food_parse(food_results, nutrient_dict, values):
     # Return a simplified version of the json file returned from the USDA API
     # This deletes extraneous pieces of information, including nutrients that are
     # not tracked. It also exchanges nutrient names for their more common names, or "nicknames"
+    if len(food_results["foods"]) == 0:
+        return None
     food_arr = []
     tracked_nutrients = []
     nutrient_nicknames = []

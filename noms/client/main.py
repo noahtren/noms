@@ -40,7 +40,9 @@ class Client:
         params = dict(ndbno=ids)
         params.update(dict(type='f', format='json'))
         return_obj = self.call(params, '/V2/reports')
-        for food in return_obj["foods"]:
-            if 'error' in food.keys():
-                raise Exception(food["error"])
+        offset = 0
+        for i in range(0, len(return_obj["foods"])):
+            if 'error' in return_obj["foods"][i].keys():
+                del return_obj["foods"][i-offset]
+                offset += 1
         return return_obj

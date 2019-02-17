@@ -13,9 +13,11 @@ def _test():
     # Test Search
     print_results(get_results("Raw Broccoli", client))
     print_results(get_results("Cola", client))
+    # Test Search With No Results
+    print_results(get_results("Unicorn meat", client))
 
-    # Test Food
-    food_list = foods({'11090':100, '14400':100}, client)
+    # Test Food (last id in dict is not a food and doesn't return anything)
+    food_list = foods({'11090':100, '14400':100, '09120319':100}, client)
     m = Meal(food_list)
 
     # Test Report
@@ -109,6 +111,9 @@ def _test():
     P = Meal(pantry_food)
     for f in P.foods:
         print(f.desc["name"])
+    
+    # Should print "None" (another food id that doesn't exist):
+    print(foods({'10231232':100},client))
 
 if __name__ == "__main__":
     _test()
