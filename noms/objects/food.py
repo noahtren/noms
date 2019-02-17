@@ -4,6 +4,7 @@ from .nutrient_dict import nutrient_dict, index_from_name
 
 class Food:
     def __init__(self, data):
+        self.data = data
         self.desc = data["food"]["desc"]
         self.nutrients = data["food"]["nutrients"]
 
