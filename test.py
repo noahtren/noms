@@ -32,7 +32,8 @@ def _test():
     ni = index_from_name("Sugar")
     for food in m.foods:
         print(food.nutrients[ni])
-    
+    # Should print "None" (another food id that doesn't exist):
+    print(foods({'10231232':100},client))
     # Test Long Call
     pantry = {
     # DAIRY AND EGG
@@ -111,9 +112,6 @@ def _test():
     P = Meal(pantry_food)
     for f in P.foods:
         print(f.desc["name"])
-    
-    # Should print "None" (another food id that doesn't exist):
-    print(foods({'10231232':100},client))
 
 if __name__ == "__main__":
     _test()
