@@ -41,6 +41,9 @@ class Client:
         params.update(dict(type='f', format='json'))
         return_obj = self.call(params, '/V2/reports')
         offset = 0
+        if 'foods' not in return_obj:
+            print("See the following error: {}".format(return_obj))
+            exit()
         for i in range(0, len(return_obj["foods"])):
             if 'error' in return_obj["foods"][i-offset].keys():
                 del return_obj["foods"][i-offset]

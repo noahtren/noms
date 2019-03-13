@@ -35,7 +35,7 @@ def food_parse(food_results, nutrient_dict, values):
               'desc':["sd", "sn", "cn", "manu", "nf", "cf", "ff", "pf", "r", "rd", "ru", "ds"],
               # This current implementation deletes the measurement data from the database,
               # this could be changed later to provide richer data and easy UX tools (select measure)
-              'nutrients':["derivation", "sourcecode", "dp", "se", "measures"]}
+              'nutrients':["derivation", "sourcecode", "dp", "se"]}
     # Iterate through each food and remove extra information, and simplify names
     f = 0
     for food in food_results:
@@ -62,17 +62,11 @@ def food_parse(food_results, nutrient_dict, values):
             # check if the food doesn't contain a tracked nutrient
             while n < len(tracked_nutrients) and nutrient["nutrient_id"] > tracked_nutrients[n]:
                 to_insert = nutrient_dict[n]
-                if "nickname" in to_insert.keys():
-                    to_insert["name"] = to_insert["nickname"]
-                    del to_insert["nickname"]
                 to_insert.update(value=0)
                 food["food"]["nutrients"].insert(n,to_insert)
                 n += 1
         while n < len(tracked_nutrients) and food["food"]["nutrients"][-1]["nutrient_id"] < tracked_nutrients[-1]:
             to_insert = nutrient_dict[n]
-            if "nickname" in to_insert.keys():
-                to_insert["name"] = to_insert["nickname"]
-                del to_insert["nickname"]
             to_insert.update(value=0)
             food["food"]["nutrients"].insert(n,to_insert)
             n += 1
@@ -91,8 +85,12 @@ def food_parse(food_results, nutrient_dict, values):
         n_list = food["food"]["nutrients"]
         n_list.sort(key=operator.itemgetter("nutrient_id"))
         # end sort
+        n = 0
         for nutrient in food["food"]["nutrients"]:
+            if nutrient_nicknames[n] != None:
+                food["food"]["nutrients"][n]["name"] = nutrient_nicknames[n] 
             nutrient["value"] = nutrient["value"] * (values[f]/100)
+            n += 1
         f += 1
         food_arr.append(Food(food))
     return food_arr
