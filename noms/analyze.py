@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-def norm_rda_deficit(norm_rda_arr, nutrient_dict):
+def norm_rda_deficit(norm_rda_arr):
     r_nut = copy.deepcopy(norm_rda_arr)
     for ni in range(len(r_nut)):
         r_nut[ni]['value'] = 1 - r_nut[ni]['value']
@@ -12,7 +12,7 @@ def norm_rda_deficit(norm_rda_arr, nutrient_dict):
 
 def assess_deficit(meal, nutrient_dict):
     print("Deficit breakdown of meal:")
-    deficit = norm_rda_deficit(meal.norm_rda(nutrient_dict), nutrient_dict)
+    deficit = norm_rda_deficit(meal.norm_rda(nutrient_dict))
     loss = 0; ni = 0
     for nut in deficit:
         #if nut['value'] != 0:
@@ -28,7 +28,7 @@ def best_contributors(k, meal, suggestion, nutrient_dict, x):
     sug_norm = suggestion.norm_rda(nutrient_dict)
     sug_norm = copy.deepcopy(sug_norm)
     nutrient_residuals = []
-    req = norm_rda_deficit(meal.norm_rda(nutrient_dict), nutrient_dict)
+    req = norm_rda_deficit(meal.norm_rda(nutrient_dict))
     ni = 0
     for nut in sug_norm:
         nut['value'] *= k
@@ -63,7 +63,7 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
                 loss += (nut['value'] - this_nutrient_required) ** 2
             ni += 1
         return loss
-    required_normed_nutrients = norm_rda_deficit(meal.norm_rda(nutrient_dict), nutrient_dict)
+    required_normed_nutrients = norm_rda_deficit(meal.norm_rda(nutrient_dict))
     sol = minimize(scaled_loss, 1, args=(required_normed_nutrients, suggestion, nutrient_dict), bounds=[(0.05, sys.maxsize)], tol=1e-2)
     '''
     # this can be uncommented to display a graph
