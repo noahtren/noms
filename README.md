@@ -1,12 +1,12 @@
 # Nutrient Object Management System (noms)
 
 noms is a fun and simple Python package that allows you to obtain and work with highly detailed nutrition data for nearly 8,000 entries from the USDA Standard Reference Food Composition Database. No mainstream nutrition tracker apps reflect the level of detail that the USDA has compiled. With noms you can track:
-1. "Proximates" including macronutrients, calories, fiber and water content
+1. Proximates including macronutrients (protein, carbs, and fat), calories, fiber and water content
 2. 11 minerals
-3. 13 vitamins including all of the B vitamins and choline
+3. 13 vitamins
 4. Specific lipids including EPA and DHA (the most important omega-3s found in fish oil)
 
-This amounts to 41 nutrients being tracked, but many more are available from the database such as amino acids and other lipids. These can be viewed in all_nutrient_ids.txt, and support for other nutrients will be added in the future as requested.
+This amounts to 41 nutrients being tracked, but many more are available from the database such as amino acids and other lipids. These can be viewed in all_nutrient_ids.txt, and support for other nutrients will be added in the future as requested. You can add support for these yourself by editing noms/objects/nutrient_ids.json accordingly with entries from all_nutrient_ids.txt.
 
 Note: The Standard Reference Database is used explicitly without the addition of the USDA's Branded Foods database, as only the former allows for highly detailed reports which track 168 different nutrients -- much more information than you would find on an item's nutrition facts! This is especially valuable for nutritionists or people interested in their own health to explore the nutritional content of whole foods. 
 
@@ -112,5 +112,5 @@ for food in m.foods:
 ```
 Note that this sorts the foods in the Meal object from greatest to least in terms of how much sugar each food has.
 ## To-Do
-1. Add analytics subpackage to easily explore which foods are most beneficial to meeting certain goals.
-2. Add a scoring system, perhaps as part of the analytics subpackage, which rates a meal in terms of how it meets RDAs or exceeds limits (maybe gradient descent could be used to maximize the score/minimize loss).
+1. Update readme to reflect analytics package.
+2. Provide more example code for documentation
