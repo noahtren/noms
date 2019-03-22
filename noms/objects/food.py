@@ -2,11 +2,37 @@ import copy
 import operator
 from .nutrient_dict import nutrient_dict, index_from_name
 
+def norm_rda(nutrient_array, nutrient_dict):
+    r_nut = copy.deepcopy(nutrient_array)
+    for ni in range(len(nutrient_dict)):
+        norm_val = 0
+        if nutrient_dict[ni]['rda'] != None:
+            if r_nut[ni]['value'] < nutrient_dict[ni]['rda']:
+                # value is 5, rda is 15
+                # norm value is 5/15 = 0.33
+                norm_val = r_nut[ni]['value']/nutrient_dict[ni]['rda']
+            else:
+                # value is 30, rda is 15
+                # norm value is 1
+                norm_val = 1
+        if nutrient_dict[ni]['limit'] != None:
+            if r_nut[ni]['value'] > nutrient_dict[ni]['limit']:
+                norm_val = r_nut[ni]['value']/nutrient_dict[ni]['limit']
+            elif nutrient_dict[ni]['rda'] == None:
+                norm_val = 1
+        r_nut[ni].update(value=norm_val)
+        if 'measures' in r_nut[ni].keys():
+            del r_nut[ni]['measures']
+        del r_nut[ni]['unit']
+    return r_nut
+
 class Food:
     def __init__(self, data):
         self.data = data
         self.desc = data["food"]["desc"]
         self.nutrients = data["food"]["nutrients"]
+    def norm_rda(self, nutrient_dict):
+        return norm_rda(self.nutrients, nutrient_dict)
 
 class Meal:
     def __init__(self, foods):
@@ -26,4 +52,6 @@ class Meal:
     def sort_by_top(self, n):
         ni = index_from_name(n)
         self.foods.sort(key=lambda f: f.nutrients[ni]["value"], reverse=True)
-        
+    def norm_rda(self, nutrient_dict):
+        return norm_rda(self.nutrients, nutrient_dict)
+
