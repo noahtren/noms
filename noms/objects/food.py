@@ -2,7 +2,7 @@ import copy
 import operator
 from .nutrient_dict import nutrient_dict, index_from_name
 
-def norm_rda(nutrient_array, nutrient_dict):
+def norm_rda(nutrient_array, nutrient_dict, disp=False):
     r_nut = copy.deepcopy(nutrient_array)
     for ni in range(len(nutrient_dict)):
         norm_val = 0
@@ -10,16 +10,23 @@ def norm_rda(nutrient_array, nutrient_dict):
             if r_nut[ni]['value'] < nutrient_dict[ni]['rda']:
                 # value is 5, rda is 15
                 # norm value is 5/15 = 0.33
+                r_nut[ni].update(to="rda")
                 norm_val = r_nut[ni]['value']/nutrient_dict[ni]['rda']
             else:
                 # value is 30, rda is 15
                 # norm value is 1
+                r_nut[ni].update(to="rda")
                 norm_val = 1
         if nutrient_dict[ni]['limit'] != None:
             if r_nut[ni]['value'] > nutrient_dict[ni]['limit']:
+                r_nut[ni].update(to="limit")
                 norm_val = r_nut[ni]['value']/nutrient_dict[ni]['limit']
             elif nutrient_dict[ni]['rda'] == None:
-                norm_val = 1
+                if disp:
+                    r_nut[ni].update(to="limit")
+                    norm_val = r_nut[ni]['value']/nutrient_dict[ni]['limit']
+                else:
+                    norm_val = 1
         r_nut[ni].update(value=norm_val)
         if 'measures' in r_nut[ni].keys():
             del r_nut[ni]['measures']
@@ -48,10 +55,10 @@ class Meal:
                 self.nutrients[n]["value"] += nutrient["value"]
                 n += 1
         for n in range(0, len(self.nutrients)):
-            self.nutrients[n]["value"] = round(self.nutrients[n]["value"], 2)
+            self.nutrients[n]["value"] = self.nutrients[n]["value"]
     def sort_by_top(self, n):
         ni = index_from_name(n)
         self.foods.sort(key=lambda f: f.nutrients[ni]["value"], reverse=True)
-    def norm_rda(self, nutrient_dict):
-        return norm_rda(self.nutrients, nutrient_dict)
+    def norm_rda(self, nutrient_dict, disp=False):
+        return norm_rda(self.nutrients, nutrient_dict, disp)
 

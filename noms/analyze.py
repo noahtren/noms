@@ -60,6 +60,7 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
                     loss += ((nut['value'] - this_nutrient_required) ** 2) * 3
                 elif not nutrient_dict[ni]['group'] == "Proximates":
                     loss += (nut['value'] - this_nutrient_required) ** 2'''
+                #if not (nutrient_dict[ni]['name'] == "Sugars, total"):
                 loss += (nut['value'] - this_nutrient_required) ** 2
             ni += 1
         return loss

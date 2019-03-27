@@ -150,7 +150,7 @@ for item in nutrient_dict:
     if "limit" not in item.keys():
         item.update(limit=None)
 
-# Round values to avoid long decimals
+# Round values to avoid long decimals in rda values
 for item in nutrient_dict:
     if item["rda"] != None:
         item["rda"] = round(item["rda"], 2)
