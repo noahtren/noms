@@ -103,4 +103,3 @@ for food in m.foods:
 {'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 1.7}
 ```
 Note that this sorts the foods in the Meal object from greatest to least in terms of how much sugar each food has.
-## Using the Analysis and Recommendation Features
