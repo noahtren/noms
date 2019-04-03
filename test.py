@@ -1,30 +1,24 @@
 def _test():
+    import noms
     # Test Client
-    from noms.client.main import Client
     key = open("key.txt","r").read()
-    client = Client(key)
-
-    # Test Imports
-    from noms.objects.food import Food, Meal
-    from noms.search import get_results, print_results
-    from noms.food import foods
-    from noms.report import export_report, report
+    client = noms.Client(key)
 
     # Test Search
-    print_results(get_results("Raw Broccoli", client))
-    print_results(get_results("Cola", client))
+    noms.print_results(noms.get_results("Raw Broccoli", client))
+    noms.print_results(noms.get_results("Cola", client))
     # Test Search With No Results
-    print_results(get_results("Unicorn meat", client))
+    noms.print_results(noms.get_results("Unicorn meat", client))
 
     # Test Food (last id in dict is not a food and doesn't return anything)
-    food_list = foods({'11090':100, '14400':100, '09120319':100}, client)
-    m = Meal(food_list)
+    food_list = noms.foods({'11090':100, '14400':100, '09120319':100}, client)
+    m = noms.Meal(food_list)
 
     # Test Report
-    r = report(m)
+    r = noms.report(m)
     for i in r:
         print(i)
-    export_report(m, "report.csv")
+    noms.export_report(m, "report.csv")
 
     # Test Sorting
     from noms.objects.nutrient_dict import index_from_name
@@ -33,7 +27,7 @@ def _test():
     for food in m.foods:
         print(food.nutrients[ni])
     # Should print "None" (another food id that doesn't exist):
-    print(foods({'10231232':100},client))
+    print(noms.foods({'10231232':100},client))
     # Test Long Call
     pantry = {
     # DAIRY AND EGG
@@ -108,8 +102,8 @@ def _test():
     "11238":100, # shiitake mushrooms
     "19165":100, # cocoa powder
     }
-    pantry_food = foods(pantry, client)
-    P = Meal(pantry_food)
+    pantry_food = noms.foods(pantry, client)
+    P = noms.Meal(pantry_food)
     for f in P.foods:
         print(f.desc["name"])
 
