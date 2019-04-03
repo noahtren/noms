@@ -4,7 +4,7 @@ from .nutrient_dict import nutrient_dict, index_from_name
 
 def norm_rda(nutrient_array, nutrient_dict, disp=False):
     r_nut = copy.deepcopy(nutrient_array)
-    for ni in enumerate(nutrient_dict):
+    for ni, _ in enumerate(nutrient_dict):
         norm_val = 0
         if nutrient_dict[ni]['rda'] != None:
             if r_nut[ni]['value'] < nutrient_dict[ni]['rda']:
@@ -54,7 +54,7 @@ class Meal:
             for nutrient in food.nutrients:
                 self.nutrients[n]["value"] += nutrient["value"]
                 n += 1
-        for ni in enumerate(self.nutrients):
+        for ni, _ in enumerate(self.nutrients):
             self.nutrients[ni]["value"] = self.nutrients[ni]["value"]
     def sort_by_top(self, n):
         ni = index_from_name(n)
