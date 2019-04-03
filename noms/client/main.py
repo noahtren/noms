@@ -20,8 +20,8 @@ class Client:
         '''
         target_url = self.url + url_suffix 
         # add the key to the API call
-        params.update(dict(api_key=self.key))
-        response = json.loads(requests.get(url=target_url, params=params).text)
+        call_params = dict(params, api_key=self.key)
+        response = json.loads(requests.get(url=target_url, params=call_params).text)
         return response
 
     def search_query(self, name):
