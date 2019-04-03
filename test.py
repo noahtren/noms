@@ -21,9 +21,8 @@ def _test():
     noms.export_report(m, "report.csv")
 
     # Test Sorting
-    from noms.objects.nutrient_dict import index_from_name
     m.sort_by_top("Sugar")
-    ni = index_from_name("Sugar")
+    ni = noms.index_from_name("Sugar")
     for food in m.foods:
         print(food.nutrients[ni])
     # Should print "None" (another food id that doesn't exist):

@@ -11,3 +11,5 @@ from noms.search import get_results, print_results
 from noms.food import foods
 # csv reports
 from noms.report import export_report, report
+
+from noms.objects.nutrient_dict import index_from_name
