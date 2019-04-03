@@ -6,7 +6,7 @@ import os
 
 def norm_rda_deficit(norm_rda_arr):
     r_nut = copy.deepcopy(norm_rda_arr)
-    for ni in range(len(r_nut)):
+    for ni, _ in enumerate(r_nut):
         r_nut[ni]['value'] = 1 - r_nut[ni]['value']
     return r_nut
 
@@ -87,7 +87,7 @@ def generate_recommendations(meal, pantry, nutrient_dict, n):
     '''
     rec_data = []
     rec_index = 0; rec_loss = sys.maxsize; rec_optimum = 0
-    for rec_i in range(len(pantry)):
+    for rec_i, _ in enumerate(pantry):
         sug_obj = suggestion_loss(meal, pantry[rec_i], nutrient_dict)
         cur_loss = sug_obj[0]
         # print("name:", pantry[rec_i].desc['name'], "loss:", sug_obj[0], "k:", sug_obj[1])
