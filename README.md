@@ -24,19 +24,13 @@ pip install noms --upgrade
 1. Get a data.gov API key for free from here: https://api.data.gov/signup/
 2. Initialize a client object with the key you received.
 ```python
-from noms.client.main import Client
-client = Client("api key")
-```
-3. Import the methods that you'd like to use.
-```python
-from noms.search import get_results, print_results
-from noms.food import foods
-from noms.report import export_report, report
+import noms
+client = noms.Client("api key")
 ```
 ## Searching the Database
 ```python
-search_results = get_results("Raw Broccoli", client)
-print_results(search_results)
+search_results = noms.get_results("Raw Broccoli", client)
+noms.print_results(search_results)
 ```
 ```
 ================================================================================================================
@@ -54,19 +48,18 @@ Broccoli, flower clusters, raw                                           Vegetab
 ## Requesting Food Data From the Database
 In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage (14400). The numbers afterwards represent the mass of that food, in grams. More mass for a given food equals a greater amount of each nutrient in equal proportion (twice the broccoli has twice the vitamins).
 ```python
-food_list = foods({'11090':100, '14400':100}, client)
+food_list = noms.foods({'11090':100, '14400':100}, client)
 ```
 ## Initializing a Meal With a List of Foods
 The foods() method returned a list of two Food objects when given the arguments above, but if you would like to generate a report, analyze or sort a group of foods, they should be merged into a Meal object. This is done by simply constructing a Meal instance with a list of Food objects. You will also need to import the Meal class.
 ```python
-from noms.objects.food import Meal
-m = Meal(food_list)
+m = noms.Meal(food_list)
 ```
 
 ## Generating and Displaying a Report 
 The report is a dictionary which shows if RDAs (or Adequate Intakes) are being met or exceeded. These values are assigned by default in noms.objects.nutrient_dict, but support will be added to modify these settings in the future.
 ```python
-r = report(m)
+r = noms.report(m)
 for i in r:
     print(i)
 ```
@@ -99,10 +92,9 @@ for i in r:
 ## Sorting Foods in a Meal By a Specific Nutrient
 Sometimes it is helpful to see which foods contain the most of a given nutrient in a meal. For example, you may want to see which foods contributed the most sugar for a given day. This can be achieved through the following code:
 ```python
-from noms.objects.nutrient_dict import index_from_name
 # index_from_name returns the index that nutrient information exists in an array of nutrients
 m.sort_by_top("Sugar")
-ni = index_from_name("Sugar")
+ni = noms.index_from_name("Sugar")
 for food in m.foods:
     print(food.nutrients[ni])
 ```
@@ -111,6 +103,4 @@ for food in m.foods:
 {'nutrient_id': 269, 'name': 'Sugar', 'group': 'Proximates', 'unit': 'g', 'value': 1.7}
 ```
 Note that this sorts the foods in the Meal object from greatest to least in terms of how much sugar each food has.
-## To-Do
-1. Update readme to reflect analytics package.
-2. Provide more example code for documentation
+## Using the Analysis and Recommendation Features
