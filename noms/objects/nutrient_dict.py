@@ -3,7 +3,7 @@ import os
 import codecs
 
 def index_from_name(name):
-    i = 0; found = False
+    i = 0
     for nutrient in nutrient_dict:
         if nutrient["name"] == name:
             return i
