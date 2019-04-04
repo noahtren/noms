@@ -6,12 +6,12 @@ def _test():
 
     # Test Search
     print(client.search_query("Raw Broccoli"))
-    print(client.search_query("Cola"))
+    print(client.search_query("Brown Rice"))
     # Test Search With No Results
     print(client.search_query("Unicorn meat"))
 
     # Test Food (last id in dict is not a food and doesn't return anything)
-    food_list = client.get_foods({'11090':100, '14400':100, '09120319':100})
+    food_list = client.get_foods({'11090':100, '20041':500, '09120319':100})
     m = noms.Meal(food_list)
 
     # Test Report
@@ -54,15 +54,14 @@ def _test():
     "09201":100, # oranges
     "09132":100, # grapes
     # PROCESSED
-    "21250":100, # hamburger, 6 oz
-    "21272":100, # pizza (2 slices)
+    "21250":100, # hamburger
+    "21272":100, # pizza
     "19088":100, # ice cream
-    "19057":100, # doritos (25)
     "18249":100, # donut
     # DRINK
     "14400":100, # coke
     "14429":100, # tap water
-    "14433":100, # aquafina bottled water
+    "14433":100, # bottled water
     "09206":100, # orange juice
     "14278":100, # brewed green tea
     "14209":100, # coffee brewed with tap water
@@ -97,7 +96,6 @@ def _test():
     # OTHER
     "04053":100, # olive oil
     "19904":100, # dark chocolate
-    "14058":100, # protein powder isolate
     "11238":100, # shiitake mushrooms
     "19165":100, # cocoa powder
     }
@@ -105,6 +103,14 @@ def _test():
     P = noms.Meal(pantry_food)
     for f in P.foods:
         print(f.desc["name"])
+    
+    # Test recommendations
+    recommendations = noms.generate_recommendations(m, pantry_food, noms.nutrient_dict, 3)
+    for rec in recommendations:
+        # a recommendation is a list containing the calculated loss after the recommendation
+        # is applied, the index of the pantry for the recommendation, and the amount of that
+        # food / 100g
+        print(str(round(rec[2] * 100, 2)) + "g", "of", pantry_food[rec[1]].desc["name"])
 
 if __name__ == "__main__":
     _test()

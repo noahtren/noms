@@ -82,7 +82,7 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
     """
     return (scaled_loss(sol.x[0], required_normed_nutrients, suggestion, nutrient_dict), sol.x[0])
 
-def generate_recommendations(meal, pantry, nutrient_dict, n):
+def generate_recommendations(meal, pantry, nutrient_dict, n, verbose=False):
     """
     Gives the top n food recommendations to satisfy daily nutrition in
     context of the current foods, available foods, and a nutrient_dict full
@@ -103,7 +103,8 @@ def generate_recommendations(meal, pantry, nutrient_dict, n):
             rec_index = rec_i
             rec_optimum = sug_obj[1]
         rec_data.append([copy.copy(cur_loss), copy.copy(rec_i), copy.deepcopy(sug_obj[1])])
-        print(pantry[rec_i].desc['name'], cur_loss)
-        print("^" * 50)
+        if verbose:
+            print(pantry[rec_i].desc['name'], cur_loss)
+            print("^" * 50)
     rec_data.sort(key=lambda x: x[0])
     return rec_data[:n]

@@ -9,4 +9,9 @@ from noms.objects.food import Food, Meal
 # csv reports
 from noms.report import export_report, report
 
+# nutrient dict
 from noms.objects.nutrient_dict import index_from_name
+from noms.objects.nutrient_dict import nutrient_dict
+
+# recommendation method
+from noms.analyze import generate_recommendations
