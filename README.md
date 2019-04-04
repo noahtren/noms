@@ -48,7 +48,7 @@ Broccoli, flower clusters, raw                                           Vegetab
 ## Requesting Food Data From the Database
 In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage (14400). The numbers afterwards represent the mass of that food, in grams. More mass for a given food equals a greater amount of each nutrient in equal proportion (twice the broccoli has twice the vitamins).
 ```python
-food_list = noms.foods({'11090':100, '14400':100}, client)
+food_list = client.get_foods({'11090':100, '14400':100})
 ```
 ## Initializing a Meal With a List of Foods
 The foods() method returned a list of two Food objects when given the arguments above, but if you would like to generate a report, analyze or sort a group of foods, they should be merged into a Meal object. This is done by simply constructing a Meal instance with a list of Food objects. You will also need to import the Meal class.

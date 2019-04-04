@@ -11,7 +11,7 @@ def _test():
     print(client.search_query("Unicorn meat"))
 
     # Test Food (last id in dict is not a food and doesn't return anything)
-    food_list = noms.foods({'11090':100, '14400':100, '09120319':100}, client)
+    food_list = client.get_foods({'11090':100, '14400':100, '09120319':100})
     m = noms.Meal(food_list)
 
     # Test Report
@@ -26,7 +26,7 @@ def _test():
     for food in m.foods:
         print(food.nutrients[ni])
     # Should print "None" (another food id that doesn't exist):
-    print(noms.foods({'10231232':100},client))
+    print(client.get_foods({'10231232':100}))
     # Test Long Call
     pantry = {
     # DAIRY AND EGG
@@ -101,7 +101,7 @@ def _test():
     "11238":100, # shiitake mushrooms
     "19165":100, # cocoa powder
     }
-    pantry_food = noms.foods(pantry, client)
+    pantry_food = client.get_foods(pantry)
     P = noms.Meal(pantry_food)
     for f in P.foods:
         print(f.desc["name"])

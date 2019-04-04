@@ -1,9 +1,16 @@
 import requests
 import json
+import copy
 import operator
-from .dict_parse import search_parse
+from itertools import islice
+from .dict_parse import search_parse, food_parse
+from ..objects.nutrient_dict import nutrient_dict
 
 class SearchResults():
+    """
+    An object returned by Client.search_query which stores a Python dictionary
+    containing all of the search result information.
+    """
     def __init__(self, json):
         self.json = json
     def __str__(self, max_entries=None):
@@ -30,6 +37,11 @@ class SearchResults():
         return r_str
 
 class Client:
+    """
+    The Client class is used to interface with the USDA Standard Reference Database
+    API. It must be initialized with an API key.
+    """
+
     url = 'https://api.nal.usda.gov/usda/ndb'
 
     def __init__(self, key):
@@ -77,4 +89,26 @@ class Client:
                 del return_obj["foods"][i-offset]
                 offset += 1
         return return_obj
-    
+
+    def get_foods(self, id_value_dict):
+        # If more than 25 words are being queried, split it up
+        if len(id_value_dict.keys()) > 25:
+            print("Must call the database {} times, this may take a couple moments. Status: {leng}/{leng}".format(len(id_value_dict.keys())//25+1,leng=len(id_value_dict.keys())))
+            dict_copy = id_value_dict.copy()
+            food_obj = []
+            while len(dict_copy.keys()) > 25:
+                current_dict = {}
+                items = islice(dict_copy.items(), 25)
+                current_dict.update(items)
+                call = self.food_query(current_dict.keys())
+                food_obj += food_parse(call, nutrient_dict, list(current_dict.values()))
+                for key in current_dict.keys():
+                    del dict_copy[key]
+                print("Status: {}/{}".format(len(dict_copy.keys()), len(id_value_dict.keys())))
+            call = self.food_query(dict_copy.keys())
+            food_obj += food_parse(call, nutrient_dict, list(dict_copy.values()))
+            print("Complete!")
+        else:
+            food_obj = self.food_query(id_value_dict.keys())
+            food_obj = food_parse(food_obj, nutrient_dict, list(id_value_dict.values()))
+        return food_obj
