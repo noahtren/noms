@@ -1,11 +1,5 @@
 from .client.main import Client
-from .client.dict_parse import search_parse
 import operator
-
-def get_results(query, client):
-    search_obj = client.search_query(query)
-    search_obj = search_parse(search_obj)
-    return search_obj
 
 def print_results(search_obj, max_entries=None):
     if search_obj == None:

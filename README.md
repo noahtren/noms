@@ -29,7 +29,7 @@ client = noms.Client("api key")
 ```
 ## Searching the Database
 ```python
-search_results = noms.get_results("Raw Broccoli", client)
+search_results = client.search_query("Raw Broccoli")
 noms.print_results(search_results)
 ```
 ```

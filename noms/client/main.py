@@ -1,23 +1,24 @@
 import requests
 import json
+from .dict_parse import search_parse
 
 class Client:
     url = 'https://api.nal.usda.gov/usda/ndb'
 
     def __init__(self, key):
-        '''
+        """
         A Client instance must be initialized with a key from
         data.gov. This is free to obtain, and you can request one
         here: https://api.data.gov/signup/
-        '''
+        """
         self.key = key
 
     def call(self, params, url_suffix):
-        ''' target_url could be:
+        """ target_url could be:
         https://api.nal.usda.gov/usda/ndb/V2/reports
         https://api.nal.usda.gov/usda/ndb/search
         depending on which service of the api is being used
-        '''
+        """
         target_url = self.url + url_suffix 
         # add the key to the API call
         call_params = dict(params, api_key=self.key)
@@ -30,7 +31,7 @@ class Client:
             ds='Standard Reference',
             format='json'
         )
-        return self.call(params, '/search')
+        return search_parse(self.call(params, '/search'))
     
     def food_query(self, ids):
         # allow for either a single id (ndbno) query, or a list of queries
@@ -49,3 +50,4 @@ class Client:
                 del return_obj["foods"][i-offset]
                 offset += 1
         return return_obj
+    
