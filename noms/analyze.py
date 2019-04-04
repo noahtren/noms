@@ -1,10 +1,12 @@
 from scipy.optimize import minimize
 import copy 
-import matplotlib.pyplot as plt
 import sys
 import os
 
 def norm_rda_deficit(norm_rda_arr):
+    """ Returns a modified list of nutrient dicts in which value represents 
+    a fraction of how much a given nutrient has been satisfied. A value of
+    0 represents full satisfaction, and 1 represents no satisfaction. """
     r_nut = copy.deepcopy(norm_rda_arr)
     for ni, _ in enumerate(r_nut):
         r_nut[ni]['value'] = 1 - r_nut[ni]['value']
@@ -22,9 +24,9 @@ def assess_deficit(meal, nutrient_dict):
     print("Loss: ", round(loss, 2))
 
 def best_contributors(k, meal, suggestion, nutrient_dict, x):
-    '''
+    """
     Returns the top nutrients that are being satisfied by a give suggestion
-    '''
+    """
     sug_norm = suggestion.norm_rda(nutrient_dict)
     sug_norm = copy.deepcopy(sug_norm)
     nutrient_residuals = []
@@ -40,12 +42,12 @@ def best_contributors(k, meal, suggestion, nutrient_dict, x):
     return sorted(nutrient_residuals, key=lambda x: x['value'], reverse=True)[:x]
 
 def suggestion_loss(meal, suggestion, nutrient_dict):
-    '''
+    """
     Minimizes the squared residual of each normed nutrient for a given
     food suggestion and meal. These minimized values are then used to
     find the best food recommendation for a given meal in the context
     of a nutrient_dict
-    '''
+    """
     def scaled_loss(k, *args):
         sug_norm = args[1].norm_rda(args[2])
         sug_norm = copy.deepcopy(sug_norm)
@@ -66,8 +68,10 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
         return loss
     required_normed_nutrients = norm_rda_deficit(meal.norm_rda(nutrient_dict))
     sol = minimize(scaled_loss, 1, args=(required_normed_nutrients, suggestion, nutrient_dict), bounds=[(0.05, sys.maxsize)], tol=1e-2)
-    '''
-    # this can be uncommented to display a graph
+    """
+    # this can be uncommented to display a graph showing the convergence to minimize loss
+    # as the mass of the given food is scaled
+    import matplotlib.pyplot as plt
     xs = []; losses = []
     for x in range(0, 20):
         inp = sol.x[0] * (x/10)
@@ -75,16 +79,19 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
         losses.append(scaled_loss(inp, required_normed_nutrients, suggestion, nutrient_dict))
     plt.plot(xs, losses)
     plt.show()
-    '''
+    """
     return (scaled_loss(sol.x[0], required_normed_nutrients, suggestion, nutrient_dict), sol.x[0])
 
 def generate_recommendations(meal, pantry, nutrient_dict, n):
-    '''
-    Meal is a meal object representing the current day's meal
-    Pantry is an array of Food objects representing potential foods
-        Note: pantry food objects must have an implicit mass of 100g
-    Nutrient Dict is a personalized list of rdas and limits based on the user's preference
-    '''
+    """
+    Gives the top n food recommendations to satisfy daily nutrition in
+    context of the current foods, available foods, and a nutrient_dict full
+    of RDAs.
+        Meal is a meal object representing the current day's meal
+        Pantry is an array of Food objects representing potential foods
+        (Note: pantry food objects must have a mass of 100g)
+        Nutrient Dict is a personalized list of rdas and limits based on the user's preference
+    """
     rec_data = []
     rec_index = 0; rec_loss = sys.maxsize; rec_optimum = 0
     for rec_i, _ in enumerate(pantry):
