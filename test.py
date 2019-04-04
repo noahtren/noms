@@ -5,10 +5,10 @@ def _test():
     client = noms.Client(key)
 
     # Test Search
-    noms.print_results(noms.get_results("Raw Broccoli", client))
-    noms.print_results(noms.get_results("Cola", client))
+    print(client.search_query("Raw Broccoli"))
+    print(client.search_query("Cola"))
     # Test Search With No Results
-    noms.print_results(noms.get_results("Unicorn meat", client))
+    print(client.search_query("Unicorn meat"))
 
     # Test Food (last id in dict is not a food and doesn't return anything)
     food_list = noms.foods({'11090':100, '14400':100, '09120319':100}, client)
