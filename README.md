@@ -51,7 +51,7 @@ In this example, the ids correlate with Raw Broccoli (11090) and a Cola Beverage
 food_list = client.get_foods({'11090':100, '14400':100})
 ```
 ## Initializing a Meal With a List of Foods
-The foods() method returned a list of two Food objects when given the arguments above, but if you would like to generate a report, analyze or sort a group of foods, they should be merged into a Meal object. This is done by simply constructing a Meal instance with a list of Food objects. You will also need to import the Meal class.
+The foods() method returned a list of two Food objects when given the arguments above, but if you would like to generate a report, analyze or sort a group of foods, they should be merged into a Meal object. This is done by simply constructing a Meal instance with a list of Food objects.
 ```python
 m = noms.Meal(food_list)
 ```
