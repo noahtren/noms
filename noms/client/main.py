@@ -70,7 +70,11 @@ class Client:
             ds='Standard Reference',
             format='json'
         )
-        return SearchResults(search_parse(self.call(params, '/search')))
+        result = search_parse(self.call(params,'/search'))
+        if result == None:
+            return None
+        else:
+            return SearchResults(search_parse(self.call(params, '/search')))
     
     def food_query(self, ids):
         # allow for either a single id (ndbno) query, or a list of queries
@@ -83,7 +87,7 @@ class Client:
         offset = 0
         if 'foods' not in return_obj:
             print("See the following error: {}".format(return_obj))
-            exit()
+            return None
         for i in range(0, len(return_obj["foods"])):
             if 'error' in return_obj["foods"][i-offset].keys():
                 del return_obj["foods"][i-offset]
