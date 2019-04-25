@@ -15,3 +15,4 @@ from noms.objects.nutrient_dict import nutrient_dict
 
 # recommendation method
 from noms.analyze import generate_recommendations
+from noms.analyze import recommend_removal
