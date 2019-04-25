@@ -1,34 +1,76 @@
-def _test():
-    import noms
-    # Test Client
-    key = open("key.txt","r").read()
+import noms
+import copy
+
+def _client():
+    key = open("key.txt", "r").read()
     client = noms.Client(key)
+    assert type(client) == noms.Client
+    assert client.key == key
+    return client
 
-    # Test Search
-    print(client.search_query("Raw Broccoli"))
-    print(client.search_query("Brown Rice"))
-    # Test Search With No Results
-    print(client.search_query("Unicorn meat"))
+def _search():
+    client = _client()
+    broc_search = client.search_query("Raw Broccoli")
+    assert "items" in broc_search.json.keys()
+    assert len(broc_search.json["items"]) > 5
+    uni_search = client.search_query("Unicorn meat")
+    assert uni_search == None
 
-    # Test Food (last id in dict is not a food and doesn't return anything)
+def _foods():
+    client = _client()
     food_list = client.get_foods({'11090':100, '20041':500, '09120319':100})
-    m = noms.Meal(food_list)
+    assert len(food_list) == 2
+    food_list = client.get_foods({
+        '01001':20,
+        '01132':100,
+        '09037':80,
+        '15076':150,
+        '09201':140,
+        '14278':300,
+        '12006':20,
+        '20041':150,
+        '16057':50,
+        '11233':50,
+        '19904':10,
+        '14400':1000 # literally an entire liter of coke
+    })
+    assert len(food_list) == 11
+    assert type(food_list[0]) == noms.Food
+    assert "name" in food_list[0].desc.keys()
 
-    # Test Report
-    r = noms.report(m)
-    for i in r:
-        print(i)
-    noms.export_report(m, "report.csv")
+def _meal():
+    client = _client()
+    food_list = client.get_foods({
+        '01001':20,
+        '01132':100,
+        '09037':80,
+        '15076':150,
+        '09201':140,
+        '14278':300,
+        '12006':20,
+        '20041':150,
+        '16057':50,
+        '11233':50,
+        '19904':10,
+        '14400':1000 # literally an entire liter of coke
+    })
+    meal = noms.Meal(food_list)
+    assert type(meal) == noms.Meal
+    assert len(meal.foods) == 12
+    return meal
 
-    # Test Sorting
+def _report(meal):
+    r = noms.report(meal)
+    assert len(r) == len(noms.nutrient_dict)
+
+def _sort(meal):
+    m = copy.deepcopy(meal)
     m.sort_by_top("Sugar")
-    ni = noms.index_from_name("Sugar")
-    for food in m.foods:
-        print(food.nutrients[ni])
-    # Should print "None" (another food id that doesn't exist):
-    print(client.get_foods({'10231232':100}))
-    # Test Long Call
-    pantry = {
+    assert m.foods[0].desc["ndbno"] == '14400' # the most sugar-dense food in the meal is coke
+
+def _pantry():
+    client = _client()
+    pantry_items = {
     # DAIRY AND EGG
     "01001":100, # butter, salted
     "01145":100, # butter, without salt
@@ -99,18 +141,35 @@ def _test():
     "11238":100, # shiitake mushrooms
     "19165":100, # cocoa powder
     }
-    pantry_food = client.get_foods(pantry)
-    P = noms.Meal(pantry_food)
-    for f in P.foods:
-        print(f.desc["name"])
-    
-    # Test recommendations
-    recommendations = noms.generate_recommendations(m, pantry_food, noms.nutrient_dict, 3)
-    for rec in recommendations:
-        # a recommendation is a list containing the calculated loss after the recommendation
-        # is applied, the index of the pantry for the recommendation, and the amount of that
-        # food / 100g
-        print(str(round(rec[2] * 100, 2)) + "g", "of", pantry_food[rec[1]].desc["name"])
+    pantry_food = client.get_foods(pantry_items)
+    pantry = noms.Meal(pantry_food)
+    assert type(pantry) == noms.Meal
+    assert pantry.nutrients[0]["name"] == noms.nutrient_dict[0]["name"]
+    return pantry
+
+def _gen_recommendations(meal, pantry, verbose=False):
+    recommendations = noms.generate_recommendations(meal, pantry, noms.nutrient_dict, 3, verbose)
+    pre_meal_loss = noms.analyze.loss(meal, noms.nutrient_dict)
+    post_meal = noms.Meal(meal.foods + [pantry[recommendations[0][1]]])
+    post_meal_loss = noms.analyze.loss(post_meal, noms.nutrient_dict)
+    # check that the loss of the new meal is lower
+    assert post_meal_loss < pre_meal_loss
+
+def _remove_recommendation(meal):
+    result = noms.recommend_removal(meal, noms.nutrient_dict)
+    # check that we are recommending the user not to have a liter of coke
+    assert meal.foods[result].desc["ndbno"] == "14400"
+
+def test():
+    _client()
+    _search()
+    _foods()
+    meal = _meal()
+    _report(meal)
+    _sort(meal)
+    pantry = _pantry()
+    _gen_recommendations(meal, pantry.foods)
+    _remove_recommendation(meal)
 
 if __name__ == "__main__":
-    _test()
+    test()
