@@ -43,7 +43,7 @@ def best_contributors(k, meal, suggestion, nutrient_dict, x):
         ni += 1
     return sorted(nutrient_residuals, key=lambda x: x['value'], reverse=True)[:x]
 
-def suggestion_loss(meal, suggestion, nutrient_dict):
+def suggestion_loss(meal, suggestion, nutrient_dict, verbose=False):
     """
     Minimizes the squared residual of each normed nutrient for a given
     food suggestion and meal. These minimized values are then used to
@@ -72,30 +72,34 @@ def suggestion_loss(meal, suggestion, nutrient_dict):
     sol = minimize(scaled_loss, 1, args=(required_normed_nutrients, suggestion, nutrient_dict), bounds=[(0.05, sys.maxsize)], tol=1e-2)
     # this can be uncommented to display a graph showing the convergence to minimize loss
     # as the mass of the given food is scaled
-    import matplotlib.pyplot as plt
-    xs = []; losses = []
-    for x in range(0, 20):
-        inp = sol.x[0] * (x/10)
-        xs.append(inp)
-        losses.append(scaled_loss(inp, required_normed_nutrients, suggestion, nutrient_dict))
-    plt.plot(xs, losses)
-    plt.show()
+    if verbose:
+        import matplotlib.pyplot as plt
+        xs = []; losses = []
+        for x in range(0, 20):
+            inp = sol.x[0] * (x/10)
+            xs.append(inp)
+            losses.append(scaled_loss(inp, required_normed_nutrients, suggestion, nutrient_dict))
+        plt.plot(xs, losses)
+        plt.title("Loss graph for {}".format(suggestion.desc["name"]))
+        plt.show()
     return (scaled_loss(sol.x[0], required_normed_nutrients, suggestion, nutrient_dict), sol.x[0])
 
 def generate_recommendations(meal, pantry, nutrient_dict, n, verbose=False):
     """
     Gives the top n food recommendations to satisfy daily nutrition in
     context of the current foods, available foods, and a nutrient_dict full
-    of RDAs.
+    of RDIs.
         Meal is a meal object representing the current day's meal
         Pantry is an array of Food objects representing potential foods
         (Note: pantry food objects must have a mass of 100g)
-        Nutrient Dict is a personalized list of rdas and limits based on the user's preference
+        Nutrient Dict is a personalized list of RDIs and limits based on the user's preference
+    The function returns the loss of that recommendation, the index of the meal, 
+    and the object being suggested itself.
     """
     rec_data = []
     rec_index = 0; rec_loss = sys.maxsize; rec_optimum = 0
     for rec_i, _ in enumerate(pantry):
-        sug_obj = suggestion_loss(meal, pantry[rec_i], nutrient_dict)
+        sug_obj = suggestion_loss(meal, pantry[rec_i], nutrient_dict, verbose)
         cur_loss = sug_obj[0]
         # print("name:", pantry[rec_i].desc['name'], "loss:", sug_obj[0], "k:", sug_obj[1])
         if cur_loss < rec_loss:
