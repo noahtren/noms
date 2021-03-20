@@ -1,6 +1,6 @@
 # Nutrient Object Management System (noms)
 
-Note: I'm not able to maintain this package right now, so there is a chance that the current API integration is broken/will break given the new FoodData Central API from the USDA.
+Code adatped to accomodate the new FoodData Central API from the USDA.
 
 noms is a fun and simple Python package that allows you to obtain and work with highly detailed nutrition data for nearly 8,000 entries from the USDA Standard Reference Food Composition Database. No mainstream nutrition tracker apps reflect the level of detail that the USDA has compiled. With noms you can track:
 1. Proximates including macronutrients (protein, carbs, and fat), calories, fiber and water content
